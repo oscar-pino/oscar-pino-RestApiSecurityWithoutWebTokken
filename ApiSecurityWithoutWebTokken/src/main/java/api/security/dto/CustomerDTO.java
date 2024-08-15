@@ -1,45 +1,29 @@
-package api.security.entities;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+package api.security.dto;
 
-@Entity
-@Table(name = "customers")
-public class Customer {
-	
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name = "customer_id", unique = true)
+public class CustomerDTO {
+
 	private Long customerId;
 	
 	private String firstName;
 	
 	private String lastName;	
-	
-	@ManyToOne
-	@JoinColumn(name = "nationality_id", nullable = false)
-	private Nationality nationality;
+
+	private NationalityDTO nationalityDTO;
 
 	private String address;
-	
-	@Column(unique=true)
+
 	private String email;
 	
 	private String phone;
 
-	public Customer() {
+	public CustomerDTO() {
 	}	
 
-	public Customer(String firstName, String lastName, Nationality nationality, String address, String email,
+	public CustomerDTO(String firstName, String lastName, NationalityDTO nationalityDTO, String address, String email,
 			String phone) {
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.nationality = nationality;
+		this.nationalityDTO = nationalityDTO;
 		this.address = address;
 		this.email = email;
 		this.phone = phone;
@@ -89,18 +73,18 @@ public class Customer {
 		return customerId;
 	}
 
-	public Nationality getNationality() {
-		return nationality;
+	public NationalityDTO getNationality() {
+		return nationalityDTO;
 	}
 
-	public void setNationality(Nationality nationality) {
-		this.nationality = nationality;
+	public void setNationality(NationalityDTO nationalityDTO) {
+		this.nationalityDTO = nationalityDTO;
 	}
 
 	@Override
 	public String toString() {
 		return "Customer [customerId=" + customerId + ", firstName=" + firstName + ", lastName=" + lastName
-				+ ", nationality=" + nationality + ", address=" + address + ", email=" + email + ", phone=" + phone
+				+ ", address=" + address + ", email=" + email + ", phone=" + phone
 				+ "]";
 	}	
 }

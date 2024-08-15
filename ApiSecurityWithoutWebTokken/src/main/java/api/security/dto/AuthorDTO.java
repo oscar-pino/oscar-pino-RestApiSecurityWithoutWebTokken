@@ -1,55 +1,32 @@
-package api.security.entities;
+package api.security.dto;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+public class AuthorDTO {
 
-@Entity
-@Table(name = "authors")
-public class Author {
-	
-	// esto es un comentario
-	
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="author_id", nullable=false)
 	private Long authorId;
 	
 	private String firstName;
 	
 	private String lastName;	
-	
-	@ManyToOne
-	@JoinColumn(name = "nationality_id", nullable = false)
-	private Nationality nationality;
-	
-	@Column(name = "web_site", unique=true)
+
+	private NationalityDTO nationalityDTO;
+
 	private String webSite;
 	
-	@Column(unique=true)
+
 	private String email;
-	
-	@Column(name = "birth_date")
+
 	private Date birthDate;
 
-	public Author() {
+	public AuthorDTO() {
 	}	
 
-	public Author(String firstName, String lastName, Nationality nationality, String webSite, String email,
+	public AuthorDTO(String firstName, String lastName, NationalityDTO nationalityDTO, String webSite, String email,
 			Date birthDate) {
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.nationality = nationality;
+		this.nationalityDTO = nationalityDTO;
 		this.webSite = webSite;
 		this.email = email;
 		this.birthDate = birthDate;
@@ -100,11 +77,15 @@ public class Author {
 	public Long getAuthorId() {
 		return authorId;
 	}
+	
+	public void setAuthorId(Long authorId) {
+		this.authorId = authorId;
+	}
 
 	@Override
 	public String toString() {
 		return "Author [authorId=" + authorId + ", firstName=" + firstName + ", lastName=" + lastName + ", nationality="
-				+ nationality + ", webSite=" + webSite + ", email=" + email + ", birthDate=" + birthDate + "]";
+				+ nationalityDTO.getName() + ", webSite=" + webSite + ", email=" + email + ", birthDate=" + birthDate + "]";
 	}
 	
 }

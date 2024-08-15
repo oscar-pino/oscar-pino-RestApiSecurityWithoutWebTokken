@@ -9,33 +9,33 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "nationalities")
-public class Nationality {
+public class NationalityEntity {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "nationality_id", nullable=false, unique = true)
-	private Long nationalityId;
-	
-	@Column(unique = true)
-	private String nation;
-	
-	@Column(unique = true)
+	private Long nationalityId;	
+
+	@Column(unique = true, nullable = false)
+	private String name;	
+
+	@Column(nullable = false)
 	private String language;
 
-	public Nationality() {
+	public NationalityEntity() {
 	}
 
-	public Nationality(String nation, String language) {
-		this.nation = nation;
+	public NationalityEntity(String name, String language) {
+		this.name = name;
 		this.language = language;
 	}
 
-	public String getNation() {
-		return nation;
+	public String getName() {
+		return name;
 	}
 
-	public void setNation(String nation) {
-		this.nation = nation;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getLanguage() {
@@ -52,6 +52,6 @@ public class Nationality {
 
 	@Override
 	public String toString() {
-		return "Nationality [nationalityId=" + nationalityId + ", nation=" + nation + ", language=" + language + "]";
+		return "Nationality [nationalityId=" + nationalityId + ", name=" + name + ", language=" + language + "]";
 	}	
 }

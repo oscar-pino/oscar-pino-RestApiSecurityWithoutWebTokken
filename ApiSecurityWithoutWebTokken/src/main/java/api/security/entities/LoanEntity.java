@@ -19,7 +19,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "loans")
-public class Loan {
+public class LoanEntity {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -30,11 +30,11 @@ public class Loan {
     @JoinTable(name = "loan_book",
                joinColumns = @JoinColumn(name = "loan_id"),
                inverseJoinColumns = @JoinColumn(name = "book_id"))
-	private Set<Book> books = new HashSet<>();
+	private Set<BookEntity> books = new HashSet<>();
 	
 	@ManyToOne
 	@JoinColumn(name = "customer_id", nullable = false)
-	private Customer customer;
+	private CustomerEntity customer;
 	
 	private Date loanDate;
 	
@@ -43,12 +43,12 @@ public class Loan {
 	private String status;	
 	
 	@OneToOne(mappedBy = "loan")
-	private Return returns;
+	private ReturnEntity returns;
 
-	public Loan() {
+	public LoanEntity() {
 	}	
 
-	public Loan(Set<Book> books, Customer customer, Date loanDate, Date deliverDate, String status) {
+	public LoanEntity(Set<BookEntity> books, CustomerEntity customer, Date loanDate, Date deliverDate, String status) {
 		this.books = books;
 		this.customer = customer;
 		this.loanDate = loanDate;
@@ -86,25 +86,25 @@ public class Loan {
 		return loanId;
 	}
 
-	public Set<Book> getBooks() {
+	public Set<BookEntity> getBooks() {
 		return books;
-	}
+	}	
 
-	public void setBooks(Set<Book> books) {
+	public void setBooks(Set<BookEntity> books) {
 		this.books = books;
 	}
 
-	public Customer getCustomer() {
+	public CustomerEntity getCustomer() {
 		return customer;
 	}
 
-	public void setCustomer(Customer customer) {
+	public void setCustomer(CustomerEntity customer) {
 		this.customer = customer;
 	}
 
 	@Override
 	public String toString() {
-		return "Loan [loanId=" + loanId + ", books=" + books + ", customer=" + customer + ", loanDate=" + loanDate
+		return "Loan [loanId=" + loanId +", customer=" + customer.getFirstName() + ", loanDate=" + loanDate
 				+ ", deliverDate=" + deliverDate + ", status=" + status + "]";
 	}
 }

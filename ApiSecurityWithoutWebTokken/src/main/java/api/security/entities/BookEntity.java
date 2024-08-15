@@ -17,28 +17,30 @@ import jakarta.validation.constraints.Min;
 
 @Entity
 @Table(name = "books")
-public class Book {
+public class BookEntity {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "book_id", unique = true)
 	private Long bookId;	
 	
+	@Column(nullable = false)	
 	private String title;
 	
+	@Column(nullable = false, unique = true)
 	private String isbm;
 
 	@ManyToOne
 	@JoinColumn(name = "publisher_id", nullable = false)
-	private Publisher publisher;
+	private PublisherEntity publisher;
 
 	@ManyToOne
 	@JoinColumn(name = "category_id", nullable = false)
-	private Category category;
+	private CategoryEntity category;
 
 	@ManyToOne
 	@JoinColumn(name = "author_id", nullable = false)
-	private Author author;
+	private AuthorEntity author;
 	
 	@Column(nullable = false)
 	private Date publicationYear;
@@ -50,10 +52,10 @@ public class Book {
 //	@ManyToMany(mappedBy = "books")
 //	private Set<Loan> loans = new HashSet<>();
 	
-	public Book() {
+	public BookEntity() {
 	}
 
-	public Book(String title, String isbm, Publisher publisher, Category category, Author author, Date publicationYear, int quantity) {
+	public BookEntity(String title, String isbm, PublisherEntity publisher, CategoryEntity category, AuthorEntity author, Date publicationYear, int quantity) {
 	this.title = title;
 	this.isbm = isbm;
 	this.publisher = publisher;
@@ -91,34 +93,34 @@ public class Book {
 		return bookId;
 	}
 
-	public Publisher getPublisher() {
+	public PublisherEntity getPublisher() {
 		return publisher;
 	}
 
-	public void setPublisher(Publisher publisher) {
+	public void setPublisher(PublisherEntity publisher) {
 		this.publisher = publisher;
 	}
 
-	public Category getCategory() {
+	public CategoryEntity getCategory() {
 		return category;
 	}
 
-	public void setCategory(Category category) {
+	public void setCategory(CategoryEntity category) {
 		this.category = category;
 	}
 
-	public Author getAuthor() {
+	public AuthorEntity getAuthor() {
 		return author;
 	}
 
-	public void setAuthor(Author author) {
+	public void setAuthor(AuthorEntity author) {
 		this.author = author;
 	}
 
 	@Override
 	public String toString() {
 		return "Book [bookId=" + bookId + ", title=" + title + ", isbm=" + isbm + ", publisher=" + publisher
-				+ ", category=" + category + ", author=" + author + ", publicationYear=" + publicationYear
+				+ ", category=" + category + ", author=" + author.getFirstName() + ", publicationYear=" + publicationYear
 				+ ", quantity=" + quantity + "]";
 	}	
 }

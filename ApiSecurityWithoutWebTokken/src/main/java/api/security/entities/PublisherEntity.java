@@ -10,7 +10,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "publishers")
-public class Publisher {		
+public class PublisherEntity {		
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -35,10 +35,10 @@ public class Publisher {
 	@Column(name = "founding_date")
 	private Date foundingDate;
 	
-	public Publisher() {
+	public PublisherEntity() {
 	}
 
-	public Publisher(String name, String address, String phone, String webSite, String email,
+	public PublisherEntity(String name, String address, String phone, String webSite, String email,
 			Date foundingDate) {
 		this.name = name;
 		this.address = address;

@@ -14,7 +14,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "returns")
-public class Return {
+public class ReturnEntity {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -23,17 +23,17 @@ public class Return {
 	
 	@OneToOne
     @JoinColumn(name = "loan_id")
-	private Loan loan;
+	private LoanEntity loan;
 	
 	private Date returnDate;
 	
 	@Column(precision = 3)
 	private Float penalty;
 
-	public Return() {
+	public ReturnEntity() {
 	}	
 
-	public Return(Loan loan, Date returnDate, Float penalty) {
+	public ReturnEntity(LoanEntity loan, Date returnDate, Float penalty) {
 		this.loan = loan;
 		this.returnDate = returnDate;
 		this.penalty = penalty;
@@ -59,11 +59,11 @@ public class Return {
 		return returnId;
 	}
 
-	public Loan getLoan() {
+	public LoanEntity getLoan() {
 		return loan;
 	}
 
-	public void setLoan(Loan loan) {
+	public void setLoan(LoanEntity loan) {
 		this.loan = loan;
 	}
 
