@@ -41,4 +41,10 @@ public class ReturnServiceImp implements IDAO<ReturnEntity> {
 
 		
 	}
+
+	@Override
+	public List<ReturnEntity> getOthers(String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

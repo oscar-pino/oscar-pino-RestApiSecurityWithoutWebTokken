@@ -47,4 +47,10 @@ public class UserServiceImp implements IDAO<UserEntity> {
 
 		
 	}
+
+	@Override
+	public List<UserEntity> getOthers(String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

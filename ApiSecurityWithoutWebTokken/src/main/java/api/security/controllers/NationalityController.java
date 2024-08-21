@@ -1,7 +1,10 @@
 package api.security.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.zip.DataFormatException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,22 +32,20 @@ public class NationalityController {
 	@PostMapping("/create")
 	public ResponseEntity<?> create(@RequestBody NationalityDTO nationalityDTO) {
 
-		if (nationalityDTO.getName().trim().length() != 0 & nationalityDTO.getLanguage().trim().length() != 0) {
+		Optional<NationalityEntity> recovered = nationalityService.readByName(nationalityDTO.getName());
 
-			if (nationalityService.readByName(nationalityDTO.getName()).get().getName()
-					.equalsIgnoreCase(nationalityDTO.getName())) {
-				return ResponseEntity.status(HttpStatus.CONFLICT)
-						.body(nationalityDTO.getName() + ", ya existe, pruebe con otro nombre.");
-			} else {
-				nationalityService
-						.create(new NationalityEntity(nationalityDTO.getName(), nationalityDTO.getLanguage()));
-				return ResponseEntity.status(HttpStatus.CREATED)
-						.body(nationalityDTO.getName() + ", creada sastifactoriamente.");
-			}
+		if (recovered.isPresent() & !nationalityDTO.getLanguage().isEmpty()) {
 
+			return ResponseEntity.status(HttpStatus.CONFLICT)
+					.body(nationalityDTO.getName() + ", ya existe, pruebe con otro nombre.");
 		}
 
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("datos inválidos.");
+		if (!nationalityDTO.getName().isEmpty() & !nationalityDTO.getLanguage().isEmpty()) {
+			nationalityService.create(new NationalityEntity(nationalityDTO.getName(), nationalityDTO.getLanguage()));
+			return ResponseEntity.status(HttpStatus.CREATED)
+					.body(nationalityDTO.getName() + ", creada sastifactoriamente.");
+		} else
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("faltan datos.");
 	}
 
 	@GetMapping("/read/id/{id}")
@@ -52,10 +53,11 @@ public class NationalityController {
 
 		Optional<NationalityEntity> recovered = nationalityService.readById(id);
 
-		if (recovered != null)
+		if (recovered.isPresent())
 			return ResponseEntity.status(HttpStatus.ACCEPTED).body(recovered.get());
 
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("no se ha encontrado nationalidad con el id: " + id);
+		return ResponseEntity.status(HttpStatus.NOT_FOUND)
+				.body("no se ha encontrado nacionalidad con el id: " + id + ".");
 	}
 
 	@GetMapping("/read/name/{name}")
@@ -63,11 +65,11 @@ public class NationalityController {
 
 		Optional<NationalityEntity> recovered = nationalityService.readByName(name);
 
-		if (recovered != null)
+		if (recovered.isPresent())
 			return ResponseEntity.status(HttpStatus.ACCEPTED).body(recovered.get());
 
 		return ResponseEntity.status(HttpStatus.NOT_FOUND)
-				.body("no se ha encontrado nationalidad con el name: " + name);
+				.body("no se ha encontrado nacionalidad con el nombre: " + name + ".");
 	}
 
 	@GetMapping("/read/all")
@@ -79,25 +81,39 @@ public class NationalityController {
 		if (nationes.size() > 0)
 			return ResponseEntity.status(HttpStatus.ACCEPTED).body(nationes);
 
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("no se han encontrado nationalidades.");
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("no se han encontrado nacionalidades.");
 	}
 
 	@PutMapping("/update/{id}")
-	public ResponseEntity<?> update(@PathVariable Long id, @RequestBody NationalityDTO nationality) {
+	public ResponseEntity<?> update(@PathVariable Long id, @RequestBody NationalityDTO nationalityDTO) {
 
 		Optional<NationalityEntity> recovered = nationalityService.readById(id);
 
-		if (recovered != null) {
+		if (nationalityDTO.getName().isEmpty() | nationalityDTO.getLanguage().isEmpty()) {
 
-			NationalityEntity ne = new NationalityEntity(nationality.getName(), nationality.getLanguage());
-			recovered.get().setName(ne.getName());
-			recovered.get().setLanguage(ne.getLanguage());
-			nationalityService.create(recovered.get());
+			return ResponseEntity.status(HttpStatus.CONFLICT).body("faltan datos.");
 
-			return ResponseEntity.status(HttpStatus.ACCEPTED).body(recovered.get());
+		} else if (recovered.isPresent()) {
+
+			ArrayList<NationalityEntity> otros = nationalityService.getOthers(recovered.get().getName());
+
+			if (otros.contains(nationalityService.readByName(nationalityDTO.getName()).get()))
+				return ResponseEntity.status(HttpStatus.CONFLICT)
+						.body(nationalityDTO.getName() + ", ya existe, pruebe con otro nombre.");
+			else {
+				NationalityEntity na = recovered.get();
+				na.setName(nationalityDTO.getName());
+				na.setLanguage(nationalityDTO.getLanguage());
+
+				nationalityService.create(na);
+
+				return ResponseEntity.status(HttpStatus.CONFLICT).body("datos actualizados, correctamente.");
+			}
+
 		} else
 			return ResponseEntity.status(HttpStatus.NOT_FOUND)
-					.body("no se ha encontrado nacionalidad con el id: " + id + ", para actualización.");
+					.body("no se ha encontrado nacionalidad con el id: " + id + ".");
+
 	}
 
 	@DeleteMapping("/delete/{id}")
@@ -105,12 +121,13 @@ public class NationalityController {
 
 		Optional<NationalityEntity> recovered = nationalityService.readById(id);
 
-		if (recovered != null) {
+		if (recovered.isPresent()) {
 			nationalityService.deleteById(id);
 			return ResponseEntity.status(HttpStatus.ACCEPTED)
-					.body("cationalidad con id: " + id + ", eliminada sastifactoriamente.");
+					.body("nacionalidad con id: " + id + ", eliminada correctamente.");
 		} else
 			return ResponseEntity.status(HttpStatus.NOT_FOUND)
-					.body("no se ha encontrado nationalidad con el id: " + id);
+					.body("no se ha encontrado nacionalidad con el id: " + id + ".");
 	}
+
 }

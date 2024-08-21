@@ -42,4 +42,10 @@ public class LoanServicesImp implements IDAO<LoanEntity> {
 
 		
 	}
+
+	@Override
+	public List<LoanEntity> getOthers(String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

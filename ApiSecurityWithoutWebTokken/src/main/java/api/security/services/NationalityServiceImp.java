@@ -1,7 +1,10 @@
 package api.security.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import api.security.entities.NationalityEntity;
@@ -47,5 +50,10 @@ public class NationalityServiceImp implements IDAO<NationalityEntity> {
 	public void update(NationalityEntity nation) {		
 		
 		nationalityRepository.save(nation);
+	}
+	
+	public ArrayList<NationalityEntity> getOthers(String name){
+		
+		return (ArrayList<NationalityEntity>)readAll().stream().filter(n -> !n.getName().equalsIgnoreCase(name)).collect(Collectors.toList());
 	}
 }

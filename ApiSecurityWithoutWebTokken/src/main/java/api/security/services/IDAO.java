@@ -16,4 +16,6 @@ public interface IDAO<T> {
 	void deleteById(Long id);
 	
 	void update(T t);	
+	
+	List<T> getOthers(String name);
 }

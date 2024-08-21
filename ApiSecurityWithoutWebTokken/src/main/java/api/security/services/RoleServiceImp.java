@@ -46,4 +46,10 @@ public class RoleServiceImp implements IDAO<RoleEntity> {
 
 		
 	}
+
+	@Override
+	public List<RoleEntity> getOthers(String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

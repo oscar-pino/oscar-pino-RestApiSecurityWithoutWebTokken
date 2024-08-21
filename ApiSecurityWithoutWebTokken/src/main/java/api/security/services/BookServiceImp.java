@@ -48,4 +48,10 @@ public class BookServiceImp implements IDAO<BookEntity> {
 		
 	
 	}
+
+	@Override
+	public List<BookEntity> getOthers(String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

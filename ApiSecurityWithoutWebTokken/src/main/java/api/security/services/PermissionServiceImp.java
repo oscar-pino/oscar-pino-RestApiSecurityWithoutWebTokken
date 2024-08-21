@@ -45,4 +45,10 @@ public class PermissionServiceImp implements IDAO<PermissionEntity> {
 	public void update(PermissionEntity permissionEntity) {
 
 	}
+
+	@Override
+	public List<PermissionEntity> getOthers(String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

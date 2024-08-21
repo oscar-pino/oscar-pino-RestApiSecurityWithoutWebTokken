@@ -41,4 +41,10 @@ public class PublisherServiceImp implements IDAO<PublisherEntity> {
 
 		
 	}
+
+	@Override
+	public List<PublisherEntity> getOthers(String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
