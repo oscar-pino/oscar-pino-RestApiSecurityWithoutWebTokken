@@ -3,8 +3,6 @@ package api.security.controllers;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.zip.DataFormatException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,25 +26,31 @@ public class NationalityController {
 
 	@Autowired
 	private NationalityServiceImp nationalityService;
-
+	
+	
 	@PostMapping("/create")
 	public ResponseEntity<?> create(@RequestBody NationalityDTO nationalityDTO) {
 
 		Optional<NationalityEntity> recovered = nationalityService.readByName(nationalityDTO.getName());
 
-		if (recovered.isPresent() & !nationalityDTO.getLanguage().isEmpty()) {
-
-			return ResponseEntity.status(HttpStatus.CONFLICT)
-					.body(nationalityDTO.getName() + ", ya existe, pruebe con otro nombre.");
-		}
-
+		
 		if (!nationalityDTO.getName().isEmpty() & !nationalityDTO.getLanguage().isEmpty()) {
+			
+			if(recovered.isPresent()) {
+				
+				return ResponseEntity.status(HttpStatus.CONFLICT)
+						.body("la nación ingresada ya existe, pruebe con otra.");
+			}
+			else {
 			nationalityService.create(new NationalityEntity(nationalityDTO.getName(), nationalityDTO.getLanguage()));
 			return ResponseEntity.status(HttpStatus.CREATED)
 					.body(nationalityDTO.getName() + ", creada sastifactoriamente.");
-		} else
+			}
+		} else			
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("faltan datos.");
 	}
+	
+	
 
 	@GetMapping("/read/id/{id}")
 	public ResponseEntity<?> readById(@PathVariable Long id) {
@@ -61,7 +65,7 @@ public class NationalityController {
 	}
 
 	@GetMapping("/read/name/{name}")
-	public ResponseEntity<?> readById(@PathVariable String name) {
+	public ResponseEntity<?> readByName(@PathVariable String name) {
 
 		Optional<NationalityEntity> recovered = nationalityService.readByName(name);
 
@@ -87,32 +91,34 @@ public class NationalityController {
 	@PutMapping("/update/{id}")
 	public ResponseEntity<?> update(@PathVariable Long id, @RequestBody NationalityDTO nationalityDTO) {
 
-		Optional<NationalityEntity> recovered = nationalityService.readById(id);
-
-		if (nationalityDTO.getName().isEmpty() | nationalityDTO.getLanguage().isEmpty()) {
-
-			return ResponseEntity.status(HttpStatus.CONFLICT).body("faltan datos.");
-
-		} else if (recovered.isPresent()) {
-
-			ArrayList<NationalityEntity> otros = nationalityService.getOthers(recovered.get().getName());
-
-			if (otros.contains(nationalityService.readByName(nationalityDTO.getName()).get()))
-				return ResponseEntity.status(HttpStatus.CONFLICT)
-						.body(nationalityDTO.getName() + ", ya existe, pruebe con otro nombre.");
+		if(id  < 1) {
+			
+			return ResponseEntity.status(HttpStatus.ACCEPTED).body("ingrese ID valido.");
+			
+		}
+		else {
+			
+			Optional<NationalityEntity> recovered = nationalityService.readById(id);
+			
+			if(recovered.isPresent()) {
+			
+			if(nationalityDTO.getName().isEmpty() | nationalityDTO.getLanguage().isEmpty())			
+				return ResponseEntity.status(HttpStatus.CONFLICT).body("faltan datos.");	
 			else {
-				NationalityEntity na = recovered.get();
-				na.setName(nationalityDTO.getName());
-				na.setLanguage(nationalityDTO.getLanguage());
-
-				nationalityService.create(na);
-
-				return ResponseEntity.status(HttpStatus.CONFLICT).body("datos actualizados, correctamente.");
+				
+				recovered = nationalityService.readByName(nationalityDTO.getName());
+				
+				if(recovered.isPresent())
+					return ResponseEntity.status(HttpStatus.CONFLICT).body("la nación ingresada ya existe, pruebe con otra.");
+				else {
+					nationalityService.create(new NationalityEntity(nationalityDTO.getName(), nationalityDTO.getLanguage()));
+					return ResponseEntity.status(HttpStatus.CREATED)
+							.body(nationalityDTO.getName() + ", creada sastifactoriamente.");					
+				}				
 			}
-
-		} else
-			return ResponseEntity.status(HttpStatus.NOT_FOUND)
-					.body("no se ha encontrado nacionalidad con el id: " + id + ".");
+		}else
+			return ResponseEntity.status(HttpStatus.CONFLICT).body("No existe nacion con ID: "+id);
+		}
 
 	}
 
@@ -127,7 +133,7 @@ public class NationalityController {
 					.body("nacionalidad con id: " + id + ", eliminada correctamente.");
 		} else
 			return ResponseEntity.status(HttpStatus.NOT_FOUND)
-					.body("no se ha encontrado nacionalidad con el id: " + id + ".");
+					.body("No se ha encontrado nacionalidad con id: " + id + ".");
 	}
 
 }

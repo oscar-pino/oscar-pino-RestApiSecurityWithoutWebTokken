@@ -46,11 +46,6 @@ public class NationalityServiceImp implements IDAO<NationalityEntity> {
 		nationalityRepository.deleteById(id);
 	}
 
-	@Override
-	public void update(NationalityEntity nation) {		
-		
-		nationalityRepository.save(nation);
-	}
 	
 	public ArrayList<NationalityEntity> getOthers(String name){
 		

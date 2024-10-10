@@ -1,8 +1,8 @@
 package api.security.entities;
 
+import java.time.LocalDate;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -27,18 +27,18 @@ public class LoanEntity {
 	private Long loanId;
 	
 	@ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "loan_book",
+    @JoinTable(name = "loans_books",
                joinColumns = @JoinColumn(name = "loan_id"),
                inverseJoinColumns = @JoinColumn(name = "book_id"))
-	private Set<BookEntity> books = new HashSet<>();
+	private List<BookEntity> books;
 	
 	@ManyToOne
 	@JoinColumn(name = "customer_id", nullable = false)
 	private CustomerEntity customer;
 	
-	private Date loanDate;
+	private LocalDate loanDate;
 	
-	private Date deliverDate;
+	private LocalDate deliverDate;
 	
 	private String status;	
 	
@@ -48,7 +48,7 @@ public class LoanEntity {
 	public LoanEntity() {
 	}	
 
-	public LoanEntity(Set<BookEntity> books, CustomerEntity customer, Date loanDate, Date deliverDate, String status) {
+	public LoanEntity(List<BookEntity> books, CustomerEntity customer, LocalDate loanDate, LocalDate deliverDate, String status) {
 		this.books = books;
 		this.customer = customer;
 		this.loanDate = loanDate;
@@ -58,19 +58,19 @@ public class LoanEntity {
 
 
 
-	public Date getLoanDate() {
+	public LocalDate getLoanDate() {
 		return loanDate;
 	}
 
-	public void setLoanDate(Date loanDate) {
+	public void setLoanDate(LocalDate loanDate) {
 		this.loanDate = loanDate;
 	}
 
-	public Date getDeliverDate() {
+	public LocalDate getDeliverDate() {
 		return deliverDate;
 	}
 
-	public void setDeliverDate(Date deliverDate) {
+	public void setDeliverDate(LocalDate deliverDate) {
 		this.deliverDate = deliverDate;
 	}
 
@@ -86,11 +86,11 @@ public class LoanEntity {
 		return loanId;
 	}
 
-	public Set<BookEntity> getBooks() {
+	public List<BookEntity> getBooks() {
 		return books;
 	}	
 
-	public void setBooks(Set<BookEntity> books) {
+	public void setBooks(List<BookEntity> books) {
 		this.books = books;
 	}
 

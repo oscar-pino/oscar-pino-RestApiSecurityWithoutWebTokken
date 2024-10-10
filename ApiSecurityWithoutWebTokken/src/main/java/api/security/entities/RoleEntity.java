@@ -1,7 +1,10 @@
 package api.security.entities;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
+
+import api.security.entities.enums.RoleEnum;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -29,8 +32,8 @@ public class RoleEntity {
     private RoleEnum roleEnum;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "role_permissions", joinColumns = @JoinColumn(name = "role_id"), inverseJoinColumns = @JoinColumn(name = "permission_id"))
-    private Set<PermissionEntity> permissionList = new HashSet<>();
+    @JoinTable(name = "roles_permissions", joinColumns = @JoinColumn(name = "role_id"), inverseJoinColumns = @JoinColumn(name = "permission_id"))
+    private List<PermissionEntity> permissionList;
 
 	public RoleEntity() {
 		
@@ -40,12 +43,12 @@ public class RoleEntity {
 		this.roleEnum = roleEnum;
 	}
 
-	public RoleEntity(RoleEnum roleEnum, Set<PermissionEntity> permissionList) {
+	public RoleEntity(RoleEnum roleEnum, ArrayList<PermissionEntity> permissionList) {
 		this.roleEnum = roleEnum;
 		this.permissionList = permissionList;
 	}
 
-	public RoleEntity(Long id, RoleEnum roleEnum, Set<PermissionEntity> permissionList) {
+	public RoleEntity(Long id, RoleEnum roleEnum, ArrayList<PermissionEntity> permissionList) {
 		this.id = id;
 		this.roleEnum = roleEnum;
 		this.permissionList = permissionList;
@@ -67,11 +70,11 @@ public class RoleEntity {
 		this.roleEnum = roleEnum;
 	}
 
-	public Set<PermissionEntity> getPermissionList() {
+	public List<PermissionEntity> getPermissionList() {
 		return permissionList;
 	}
 
-	public void setPermissionList(Set<PermissionEntity> permissionList) {
+	public void setPermissionList(List<PermissionEntity> permissionList) {
 		this.permissionList = permissionList;
 	}
 

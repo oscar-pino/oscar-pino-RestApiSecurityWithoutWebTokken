@@ -30,19 +30,12 @@ public class UserServiceImp implements IDAO<UserEntity> {
 
 	@Override
 	public List<UserEntity> readAll() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return userRepository.findAll();
 	}
 
 	@Override
 	public void deleteById(Long id) {
-		
-
-		
-	}
-
-	@Override
-	public void update(UserEntity userEntity) {
 		
 
 		

@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import api.security.entities.PermissionEntity;
-import api.security.entities.RoleEnum;
+import api.security.entities.enums.RoleEnum;
 
 public class RoleDTO {
 	

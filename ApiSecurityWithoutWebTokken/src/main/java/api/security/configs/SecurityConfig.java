@@ -26,18 +26,14 @@ public class SecurityConfig {
 				.csrf(csrf -> csrf.disable())
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(http -> {
-					// Configurar los endpoints publicos
+					
 					http.requestMatchers(HttpMethod.GET, "/public").permitAll();
-
-					// Cofnigurar los endpoints privados
+					
 					http.requestMatchers(HttpMethod.GET, "/user").hasRole("USER");
 					http.requestMatchers(HttpMethod.POST, "/api/nationalities/create").hasRole("ADMIN");
 					http.requestMatchers(HttpMethod.POST, "/api/nationalities/delete").hasRole("ADMIN");
-					http.requestMatchers(HttpMethod.GET, "/api/nationalities/readAll").hasAnyRole("USER");
-					// http.requestMatchers(HttpMethod.PATCH,
-					// "/auth/patch").hasAnyAuthority("REFACTOR");
-
-					// Configurar el resto de endpoint - NO ESPECIFICADOS
+					http.requestMatchers(HttpMethod.GET, "/api/nationalities/readAll").hasAnyRole("USER");			
+		
 					// http.anyRequest().denyAll();
 					http.anyRequest().authenticated();
 				}).

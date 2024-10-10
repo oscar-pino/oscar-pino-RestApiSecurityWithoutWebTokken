@@ -1,8 +1,9 @@
 package api.security.repositories;
 
-import java.util.Optional;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import api.security.entities.PermissionEntity;
@@ -10,6 +11,8 @@ import api.security.entities.PermissionEntity;
 @Repository
 public interface IPermissionRepository extends JpaRepository<PermissionEntity, Long> {
 	
-	Optional<PermissionEntity> findByName(String name);
+	/*
+	@Query(value = "SELECT * FROM permissions WHERE permission_name = :name", nativeQuery = true)
+	List<PermissionEntity> findAllByName(String name); */
 
 }

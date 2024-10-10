@@ -44,12 +44,6 @@ public class BookServiceImp implements IDAO<BookEntity> {
 	}
 
 	@Override
-	public void update(BookEntity bookEntity) {
-		
-	
-	}
-
-	@Override
 	public List<BookEntity> getOthers(String name) {
 		// TODO Auto-generated method stub
 		return null;

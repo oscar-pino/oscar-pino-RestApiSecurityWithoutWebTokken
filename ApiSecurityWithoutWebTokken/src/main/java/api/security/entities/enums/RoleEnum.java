@@ -1,4 +1,4 @@
-package api.security.entities;
+package api.security.entities.enums;
 
 public enum RoleEnum {
     ADMIN,

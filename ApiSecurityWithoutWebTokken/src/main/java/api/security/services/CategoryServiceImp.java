@@ -36,13 +36,6 @@ public class CategoryServiceImp implements IDAO<CategoryEntity> {
 	}
 
 	@Override
-	public void update(CategoryEntity categoryEntity) {
-		
-		
-		
-	}
-
-	@Override
 	public List<CategoryEntity> getOthers(String name) {
 		// TODO Auto-generated method stub
 		return null;

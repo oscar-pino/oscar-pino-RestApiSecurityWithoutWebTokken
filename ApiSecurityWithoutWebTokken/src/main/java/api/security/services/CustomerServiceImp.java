@@ -38,13 +38,6 @@ public class CustomerServiceImp implements IDAO<CustomerEntity> {
 	}
 
 	@Override
-	public void update(CustomerEntity customerEntity) {
-		
-
-		
-	}
-
-	@Override
 	public List<CustomerEntity> getOthers(String name) {
 		// TODO Auto-generated method stub
 		return null;

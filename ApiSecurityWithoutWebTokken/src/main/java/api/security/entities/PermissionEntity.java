@@ -1,7 +1,11 @@
 package api.security.entities;
 
+import api.security.entities.enums.PermissionEnum;
+import api.security.entities.enums.RoleEnum;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -15,19 +19,20 @@ public class PermissionEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, updatable = false)
-    private String name;
+    @Column(name = "permission_name")
+    @Enumerated(EnumType.STRING)
+    private PermissionEnum permissionEnum;
 
 	public PermissionEntity() {
 	}
 
-	public PermissionEntity(String name) {
-		this.name = name;
+	public PermissionEntity(PermissionEnum permissionEnum) {
+		this.permissionEnum = permissionEnum;
 	}
 
-	public PermissionEntity(Long id, String name) {
+	public PermissionEntity(Long id, PermissionEnum permissionEnum) {
 		this.id = id;
-		this.name = name;
+		this.permissionEnum = permissionEnum;
 	}
 
 	public Long getId() {
@@ -38,16 +43,16 @@ public class PermissionEntity {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public PermissionEnum getPermissionEnum() {
+		return permissionEnum;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setPermissionEnum(PermissionEnum permissionEnum) {
+		this.permissionEnum = permissionEnum;
 	}
 
 	@Override
 	public String toString() {
-		return "PermissionEntity [id=" + id + ", name=" + name + "]";
+		return "PermissionEntity [id=" + id + ", name=" + permissionEnum.name() + "]";
 	}    
 }
